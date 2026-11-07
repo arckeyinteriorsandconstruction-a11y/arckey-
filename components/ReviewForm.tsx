@@ -177,7 +177,7 @@ export default function ReviewForm({ shareUrl }: { shareUrl: string }) {
 
       <div>
         <label htmlFor="r-email" className="mb-1 block text-sm font-medium text-ink">
-          Email <span className="font-normal text-muted">(optional, only seen by us)</span>
+          Email <span className="font-normal text-muted">(optional, we will email you a confirmation)</span>
         </label>
         <input id="r-email" name="email" type="email" maxLength={120} autoComplete="email" className={field} placeholder="you@example.com" />
       </div>

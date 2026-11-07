@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { dbConfigured } from "@/lib/db";
-import { sendReviewAlert } from "@/lib/mail";
+import { sendReviewAlert, sendReviewerThanks } from "@/lib/mail";
 import { createReview, recentCountByIp } from "@/lib/reviews";
 import { ipHash } from "@/lib/security";
 import { parseReview } from "@/lib/validate";
@@ -41,7 +41,10 @@ export async function POST(req: Request) {
     const status = autoApprove ? "approved" : "pending";
     await createReview(parsed.value, hash, status);
 
-    await sendReviewAlert({ ...parsed.value, published: autoApprove });
+        await sendReviewAlert({ ...parsed.value, published: autoApprove });
+    if (parsed.value.email) {
+      await sendReviewerThanks({ name: parsed.value.name, email: parsed.value.email, published: autoApprove });
+    }
 
     if (autoApprove) {
       revalidatePath("/");
